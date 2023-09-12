@@ -1,0 +1,53 @@
+.AppWrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.titleWrapper {
+  color: rgb(158, 242, 24);
+  font-size: 80px;
+}
+
+.modalWidth {
+  width: 100vw;
+}
+.pageButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.savebutton {
+  display: flex;
+  gap: 20px;
+}
+button {
+  background-color: rgb(20, 245, 23);
+  border: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+}
+
+.PaymentWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+}
+.LogoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.CouponWrapper {
+  display: flex;
+  flex-direction: column;
+}
+.TotalamountWrapper {
+  display: flex;
+  font-size: 20px;
+  gap: 50px;
+}
