@@ -4,9 +4,6 @@ import NewForm from "./NewForm";
 
 const FormModal = () => {
   const [open, setOpen] = useState(false);
-  const handleCancel = () => {
-    setOpen(false);
-  };
 
   return (
     <div>
@@ -22,7 +19,7 @@ const FormModal = () => {
         footer={[]}
       >
         <div>
-          <NewForm />
+          <NewForm setOpen={setOpen} />
         </div>
       </Modal>
     </div>

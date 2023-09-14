@@ -6,7 +6,7 @@ import From1 from "./From1";
 import From2 from "./From2";
 import { useFroms } from "../Contest/FormContext";
 
-const NewForm = () => {
+const NewForm = ({ setOpen }) => {
   const { steps, currentStepIndex, step, isFirstStep, back, next, isLastStep } =
     useMultiStepForm([<From1 />, <From2 />]);
 
@@ -15,9 +15,11 @@ const NewForm = () => {
   function onFinish(e) {
     setforms((prev) => [...prev, userDetails]);
     setuserDetails({});
-    next();
+    back();
+    setOpen(false);
   }
-  console.log(forms);
+
+  console.log(userDetails);
   return (
     <>
       <Form name="sCorpForm" layout="vertical" onFinish={onFinish}>
@@ -37,7 +39,11 @@ const NewForm = () => {
             <button type="button" onClick={back}>
               Save
             </button>
-            {!isLastStep && <button type="submit">Next</button>}
+            {!isLastStep && (
+              <button type="button" onClick={next}>
+                Next
+              </button>
+            )}
             {isLastStep && <button type="submit">Submit</button>}
           </div>
         </div>
