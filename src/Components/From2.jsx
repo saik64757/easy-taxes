@@ -1,35 +1,88 @@
-import React from "react";
-import {
-  Form,
-  Input,
-  Typography,
-  Radio,
-  Space,
-  Upload,
-  Checkbox,
-  Button,
-} from "antd";
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Typography, Radio, Space, Checkbox, Button } from "antd";
 import Styles from "../App.module.css";
+import Uploadinput from "./Uploadinput";
+import { useFroms } from "../Contest/FormContext";
 
 const { Title } = Typography;
-const { Search } = Input;
 const From2 = () => {
+  const { userDetails, setuserDetails } = useFroms();
   const normFile = (e) => {
-    console.log("Upload event:", e);
+    // console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }
     return e?.fileList;
   };
+
+  function handleform2Change(e) {
+    setuserDetails((prev) => {
+      // Only Trinary
+
+      if (e.target.name === "requiredDocs") {
+        return {
+          ...prev,
+          [e.target.name]: prev?.requiredDocs
+            ? prev?.requiredDocs.includes(e.target.value)
+              ? prev?.requiredDocs.filter((value) => value !== e.target.value)
+              : [...prev?.requiredDocs, e.target.value]
+            : [e.target.value],
+        };
+      }
+
+      if (e.target.name === "transaction") {
+        if (prev?.transaction) {
+          if (prev?.transaction.includes(e.target.value)) {
+            return {
+              ...prev,
+              [e.target.name]: prev?.transaction.filter(
+                (value) => value !== e.target.value
+              ),
+            };
+          } else {
+            return {
+              ...prev,
+              [e.target.name]: [...prev?.transaction, e.target.value],
+            };
+          }
+        } else {
+          return {
+            ...prev,
+            [e.target.name]: [e.target.value],
+          };
+        }
+      }
+    });
+  }
+
   return (
-    <div>
+    <div onChange={handleform2Change}>
       <Form.Item label="Was there any following transaction in 2022?">
         <Radio.Group>
           <Space direction="vertical">
-            <Checkbox>Capital Infusion</Checkbox>
-            <Checkbox>Capital Withdrawal</Checkbox>
-            <Checkbox>Related Party Transaction</Checkbox>
+            <Checkbox
+              name="transaction"
+              checked={userDetails?.transaction?.includes("Capital Infusion")}
+              value={"Capital Infusion"}
+            >
+              Capital Infusion
+            </Checkbox>
+            <Checkbox
+              name="transaction"
+              checked={userDetails?.transaction?.includes("Capital Withdrawal")}
+              value={"Capital Withdrawal"}
+            >
+              Capital Withdrawal
+            </Checkbox>
+            <Checkbox
+              name="transaction"
+              checked={userDetails?.transaction?.includes(
+                "Related Party Transaction"
+              )}
+              value={"Related Party Transaction"}
+            >
+              Related Party Transaction
+            </Checkbox>
           </Space>
         </Radio.Group>
       </Form.Item>
@@ -43,47 +96,85 @@ const From2 = () => {
         ]}
       >
         <Form.Item
-          name="returnsLastYear"
           valuePropName="fileList"
           getValueFromEvent={normFile}
           noStyle
-        >
-          <Upload.Dragger name="files" action="/upload.do">
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Browse Files</p>
-            <p className="ant-upload-hint">Drag and Drop Files</p>
-          </Upload.Dragger>
-        </Form.Item>
+        ></Form.Item>
+        <Uploadinput disabled="yes" />
       </Form.Item>
       <Form.Item label="Please Upload the following Documents:">
         <Radio.Group>
           <Space direction="vertical">
-            <Checkbox>Bank Statements</Checkbox>
-            <Checkbox>Credit Card Statements</Checkbox>
-            <Checkbox>Form 10991</Checkbox>
-            <Checkbox>Form 940/941</Checkbox>
-            <Checkbox>EIN Certificate</Checkbox>
-            <Checkbox>IRS Acceptance Letter of S-Corp</Checkbox>
-            <Checkbox>{`Financials(if prepared)`}</Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={"Bank Statements"}
+              checked={userDetails?.requiredDocs?.includes("Bank Statements")}
+            >
+              Bank Statements
+            </Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={"Credit Card Statements"}
+              checked={userDetails?.requiredDocs?.includes(
+                "Credit Card Statements"
+              )}
+            >
+              Credit Card Statements
+            </Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={"Form 10991"}
+              checked={userDetails?.requiredDocs?.includes("Form 10991")}
+            >
+              Form 10991
+            </Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={"Form 940/941"}
+              checked={userDetails?.requiredDocs?.includes("Form 940/941")}
+            >
+              Form 940/941
+            </Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={"EIN Certificate"}
+              checked={userDetails?.requiredDocs?.includes("EIN Certificate")}
+            >
+              EIN Certificate
+            </Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={"IRS Acceptance Letter of S-Corp"}
+              checked={userDetails?.requiredDocs?.includes(
+                "IRS Acceptance Letter of S-Corp"
+              )}
+            >
+              IRS Acceptance Letter of S-Corp
+            </Checkbox>
+            <Checkbox
+              name="requiredDocs"
+              value={`Financials(if prepared)`}
+              checked={userDetails?.requiredDocs?.includes(
+                `Financials(if prepared)`
+              )}
+            >{`Financials(if prepared)`}</Checkbox>
           </Space>
         </Radio.Group>
+      </Form.Item>
+      <Form.Item
+        label="Upload the above Documents."
+        name={"Upload the above Documents."}
+      >
         <Form.Item
-          name="returnsLastYear"
           valuePropName="fileList"
+          name={"fileList"}
           getValueFromEvent={normFile}
           noStyle
         >
-          <Upload.Dragger name="files" action="/upload.do">
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Browse Files</p>
-            <p className="ant-upload-hint">Drag and Drop Files</p>
-          </Upload.Dragger>
+          <Uploadinput disabled="yes" />
         </Form.Item>
       </Form.Item>
+
       <Title level={4}>
         Please complete the payment. We will prepare the draft tax return within
         48 hours!
@@ -102,7 +193,6 @@ const From2 = () => {
         </div>
         <div style={{ fontSize: "20px" }}>{`$349.00`}</div>
       </div>
-
       <div className={Styles.PaymentWrapper}>
         <div className={Styles.CouponWrapper}>
           <Title level={4}>Enter Coupon</Title>
