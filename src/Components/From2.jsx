@@ -56,7 +56,7 @@ const From2 = () => {
   }
 
   return (
-    <div onChange={handleform2Change}>
+    <div onChange={handleform2Change} className={Styles.form2Wrapper}>
       <Form.Item label="Was there any following transaction in 2022?">
         <Radio.Group>
           <Space direction="vertical">
